@@ -1,39 +1,52 @@
-import React, { useReducer } from 'react'
+import React, { useState } from 'react'
 import './App.css';
 import Select from 'react-select'
-import { DateRangeInput, DateSingleInput, Datepicker } from '@datepicker-react/styled'
 import typeOfSystem from './typeOfSystem'
+import DateRangePicker from '@wojtekmaj/react-daterange-picker';
 
 const typeSystem = typeOfSystem('System');
-console.log(typeSystem);
 const defType = typeOfSystem('Критичность');
-console.log(defType);
 
-const Form = () => {
+const Form = ({ onSubmit }) => {
+
+  const [date, setDate] = useState(null);
+  const [system, setSystem] = useState(null);
+  const [defect, setDefect] = useState(null);
+
+  console.log("DATE", date);
     const onDatesChange = (data) => {console.log(data)};
     return (
         <div>
             <div className="datapicker-container"></div>
             <p className="title">What period of time?</p>
-            <DateRangeInput
-                onDatesChange={onDatesChange}
-                //focusedInput={new Date()} // START_DATE, END_DATE or null
-                startDate={new Date()} // Date or null
-                endDate={new Date()} // Date or null
-             />
+
+          <DateRangePicker
+            onChange={setDate}
+            value={date}
+          />
 
             <div className="select-container">
                 <div className="select">
                     <p className="title">Which system?</p>
-                    <Select options={typeSystem} />
+                    <Select
+                      options={typeSystem}
+                      onChange={ pickedSystem => {
+                        setSystem(pickedSystem.value);
+                      }}
+                    />
                 </div>
                 <div className="select">
                     <p className="title">What is the criticality of defects?</p>
-                    <Select options={defType} />
+                    <Select
+                      options={defType}
+                      onChange={ pickedDefect => {
+                        setDefect(pickedDefect.value);
+                      }}
+                    />
                 </div>
             </div>
             <div className="button-container">
-                 <button className="button">Build a graph</button>
+                 <button className="button" onClick={() => onSubmit({ date, system, defect }) }>Build a graph</button>
             </div>
         </div>
     )
