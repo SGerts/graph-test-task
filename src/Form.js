@@ -1,54 +1,66 @@
-import React, { useState } from 'react'
-import './App.css';
-import Select from 'react-select'
-import typeOfSystem from './typeOfSystem'
+import React, { useState } from 'react';
+import { FormGroup, Label } from 'reactstrap';
 import DateRangePicker from '@wojtekmaj/react-daterange-picker';
+import Select from 'react-select';
+import { Button } from 'reactstrap';
 
-const typeSystem = typeOfSystem('System');
-const defType = typeOfSystem('Критичность');
+import './form.css';
+import {getMinDate, getMaxDate, getSystemList, getCriticalityList} from './service';
 
-const Form = ({ onSubmit }) => {
+const criticalityList = getCriticalityList().map(value => ({ value, label: value }));
+const systemList = getSystemList().map(value => ({ value, label: value }));
 
-  const [date, setDate] = useState(null);
+const Form = ({ onSubmit, loading, className }) => {
+
+  const [date, setDate] = useState([getMinDate(), getMaxDate()]);
   const [system, setSystem] = useState(null);
-  const [defect, setDefect] = useState(null);
+  const [criticality, setCriticality] = useState(null);
 
-  console.log("DATE", date);
-    const onDatesChange = (data) => {console.log(data)};
-    return (
+  return (
+    <div className={className}>
+      <FormGroup style={{flexGrow: '0'}}>
+        <Label>Период</Label>
         <div>
-            <div className="datapicker-container"></div>
-            <p className="title">What period of time?</p>
-
-          <DateRangePicker
-            onChange={setDate}
-            value={date}
-          />
-
-            <div className="select-container">
-                <div className="select">
-                    <p className="title">Which system?</p>
-                    <Select
-                      options={typeSystem}
-                      onChange={ pickedSystem => {
-                        setSystem(pickedSystem.value);
-                      }}
-                    />
-                </div>
-                <div className="select">
-                    <p className="title">What is the criticality of defects?</p>
-                    <Select
-                      options={defType}
-                      onChange={ pickedDefect => {
-                        setDefect(pickedDefect.value);
-                      }}
-                    />
-                </div>
-            </div>
-            <div className="button-container">
-                 <button className="button" onClick={() => onSubmit({ date, system, defect }) }>Build a graph</button>
-            </div>
+        <DateRangePicker
+          onChange={setDate}
+          value={date}
+          disabled={loading}
+        />
         </div>
-    )
-}
+      </FormGroup>
+
+      <FormGroup>
+        <Label>Система</Label>
+        <Select
+          options={systemList}
+          onChange={ picked => {
+            setSystem(picked.value);
+          }}
+          isDisabled={loading}
+        />
+      </FormGroup>
+
+      <FormGroup>
+        <Label>Критичность</Label>
+        <Select
+          options={criticalityList}
+          onChange={ picked => {
+            setCriticality(picked.value);
+          }}
+          isDisabled={loading}
+        />
+      </FormGroup>
+
+      <FormGroup className='form-submit-group'>
+        <Button
+          onClick={() => onSubmit({ date, system, criticality }) }
+          disabled={loading}
+        >
+          Построить график
+        </Button>
+      </FormGroup>
+    </div>
+  )
+};
+
 export default Form;
