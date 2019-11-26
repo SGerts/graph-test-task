@@ -1,0 +1,28 @@
+.react-daterange-picker {
+    height: 38px;
+}
+.react-daterange-picker__wrapper {
+    background-color: hsl(0,0%,100%);
+    border-color: hsl(0,0%,80%);
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 1px;
+}
+
+.react-daterange-picker__wrapper input {
+    color: hsl(0,0%,50%);
+}
+
+.react-daterange-picker__wrapper > svg {
+    stroke: hsl(0,0%,50%);
+}
+
+.form-group {
+    flex-grow: 1;
+    margin-right: 1rem;
+    min-width: 260px;
+}
+
+.form-submit-group {
+    align-self: flex-end;
+}

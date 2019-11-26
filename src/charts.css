@@ -1,0 +1,17 @@
+.ChartPage {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+}
+
+.ChartPage__Form {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.ChartPage__ChartContainer {
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+
