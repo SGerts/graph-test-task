@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { AutoSizer } from 'react-virtualized';
 
 import './charts.css';
 import { preparePlotData } from './service';
 import Form from './Form';
+import { ChartContext } from './App';
 
 export const ChartPage = () => {
 
   const [loading, setLoading] = useState(false);
-  const [plot, setPlot] = useState([]);
+  const {plot, setPlot} = useContext(ChartContext);
 
   const onSubmit = (formParams) => {
     setLoading(true);
